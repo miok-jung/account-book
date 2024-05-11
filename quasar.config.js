@@ -66,6 +66,10 @@ module.exports = configure(function (/* ctx */) {
 
       vitePlugins: [
         [
+          '@ckeditor/vite-plugin-ckeditor5',
+          { theme: require.resolve('@ckeditor/ckeditor5-theme-lark') },
+        ],
+        [
           '@intlify/vite-plugin-vue-i18n',
           {
             // if you want to use Vue I18n Legacy API, you need to set `compositionOnly: false`

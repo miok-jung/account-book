@@ -1,6 +1,6 @@
 <template>
   <div style="border: 1px solid red">Test Page</div>
-  <CKEditor5 />
+  <CKEditor5 :id="'test-editor'" />
 </template>
 
 <script setup lang="ts">
