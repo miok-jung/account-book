@@ -1,5 +1,7 @@
 export default {
-  appTitle: '家計簿',
+  accountBook: {
+    title: '家計簿',
+  },
   lightMode: 'ライトモード',
   darkMode: '暗いモード',
 };

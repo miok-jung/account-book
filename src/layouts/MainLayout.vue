@@ -11,7 +11,7 @@
           @click="toggleLeftDrawer"
         />
 
-        <q-toolbar-title>{{ i18n.tm('appTitle') }}</q-toolbar-title>
+        <q-toolbar-title>{{ i18n.t('accountBook.title') }}</q-toolbar-title>
         <q-select
           v-model="selectLanguage"
           :options="languageOptions"
