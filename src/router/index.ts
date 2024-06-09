@@ -20,16 +20,37 @@ import routes from './routes';
 export default route(function (/* { store, ssrContext } */) {
   const createHistory = process.env.SERVER
     ? createMemoryHistory
-    : (process.env.VUE_ROUTER_MODE === 'history' ? createWebHistory : createWebHashHistory);
+    : process.env.VUE_ROUTER_MODE === 'history'
+    ? createWebHistory
+    : createWebHashHistory;
 
   const Router = createRouter({
-    scrollBehavior: () => ({ left: 0, top: 0 }),
+    scrollBehavior: (to, from, savedPosition) => {
+      if (savedPosition) {
+        return new Promise((resolve) => {
+          setTimeout(() => {
+            resolve({
+              ...savedPosition,
+              behavior: 'smooth',
+            });
+          }, 300);
+        });
+      } else {
+        return { left: 0, top: 0, behavior: 'smooth' };
+      }
+    },
     routes,
 
     // Leave this as is and make changes in quasar.conf.js instead!
     // quasar.conf.js -> build -> vueRouterMode
     // quasar.conf.js -> build -> publicPath
     history: createHistory(process.env.VUE_ROUTER_BASE),
+  });
+
+  // NOTE: 라우터 이후 설정
+  Router.afterEach((to) => {
+    // 제목 탭
+    document.title = `${to.meta.title}`;
   });
 
   return Router;

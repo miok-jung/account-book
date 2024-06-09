@@ -1,41 +1,14 @@
-# Quasar App (account-book)
+# Account Book
 
-account-book Quasar App
+## 24. 05
 
-## Install the dependencies
-```bash
-yarn
-# or
-npm install
-```
+- First setting
+- Language (Korean, Japanese, English) Setting
+- Remove unnecessary code
 
-### Start the app in development mode (hot-code reloading, error reporting, etc.)
-```bash
-quasar dev
-```
+### 커밋규칙
 
-
-### Lint the files
-```bash
-yarn lint
-# or
-npm run lint
-```
-
-
-### Format the files
-```bash
-yarn format
-# or
-npm run format
-```
-
-
-
-### Build the app for production
-```bash
-quasar build
-```
-
-### Customize the configuration
-See [Configuring quasar.config.js](https://v2.quasar.dev/quasar-cli-vite/quasar-config-js).
+- feat: 새로운 규칙
+- fix: 버그 수정
+- docs: 문서 수정
+- chore: 자잘한 수정
