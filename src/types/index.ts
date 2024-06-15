@@ -11,3 +11,5 @@ export type SidebarCategoryProps = {
   link?: string;
   icon?: string;
 };
+export type ThemeName = 'grey' | 'blue';
+export type Resize = { width: number; height: number };
