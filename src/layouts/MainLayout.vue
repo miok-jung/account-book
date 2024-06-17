@@ -1,5 +1,6 @@
 <template>
-  <q-layout view="lHh Lpr lFf">
+  <q-layout view="lHh Lpr lFf" style="height: 100vh">
+    <!-- ANCHOR: 1. 상단 헤더 -->
     <q-header class="bg-translate" elevated>
       <q-toolbar>
         <q-btn
@@ -10,18 +11,31 @@
           aria-label="Menu"
           @click="toggleLeftDrawer"
         />
-
-        <q-toolbar-title>{{ i18n.t('accountBook.title') }}</q-toolbar-title>
+        <q-toolbar-title>{{ i18n.t('main.title') }}</q-toolbar-title>
+        <q-select
+          v-model="selectTheme"
+          :options="themeOptions"
+          @update:model-value="onUpdateChangeTheme"
+          filled
+          dense
+          options-dense
+          standout
+        >
+          <q-tooltip>
+            <span v-html="i18n.t('main.modeDescriptionGuide')" />
+          </q-tooltip>
+        </q-select>
         <q-select
           v-model="selectLanguage"
           :options="languageOptions"
+          text-color="white"
           @update:model-value="onUpdateChangeLanguage"
           filled
           dense
           options-dense
         >
           <q-tooltip>
-            언어 선택을 통해 페이지 번역을 확인하실 수 있습니다.
+            <span v-html="i18n.t('main.modeDescriptionGuide')" />
           </q-tooltip>
         </q-select>
         <q-toggle
@@ -29,12 +43,23 @@
           color="warning"
           :icon="darkMode ? 'dark_mode' : 'light_mode'"
           @update:model-value="onUpdateSettingLightAndDarkMode"
-          >{{ darkMode ? i18n.tm('darkMode') : i18n.tm('lightMode') }}
-          <q-tooltip
-            >Change to {{ darkMode ? 'Light' : 'Dark' }} Mode</q-tooltip
-          >
+          >{{ darkMode ? i18n.t('main.lightMode') : i18n.t('main.darkMode') }}
+          <q-tooltip>
+            <span
+              v-html="
+                darkMode
+                  ? i18n
+                      .t('main.changeTo')
+                      .replace('$CONTENT$', i18n.t('main.lightMode'))
+                  : i18n
+                      .t('main.changeTo')
+                      .replace('$CONTENT$', i18n.t('main.darkMode'))
+              "
+            />
+          </q-tooltip>
         </q-toggle>
       </q-toolbar>
+      <q-resize-observer :debounce="500" @resize="onResizeHeader" />
     </q-header>
 
     <q-drawer v-model="leftDrawerOpen" show-if-above bordered>
@@ -44,27 +69,32 @@
         <Sidebar v-for="link in linksList" :key="link.title" v-bind="link" />
       </q-list>
     </q-drawer>
-
+    <!-- ANCHOR: 3. 본문 -->
     <q-page-container>
-      <router-view />
+      <router-view
+        :left-drawer-open="leftDrawerOpen"
+        :header-height="headerSize.height"
+      />
     </q-page-container>
   </q-layout>
 </template>
 
 <script setup lang="ts">
 import { onBeforeMount, ref } from 'vue';
-import { QSelect, useQuasar } from 'quasar';
+import { QResizeObserver, QSelect, colors, setCssVar, useQuasar } from 'quasar';
 import Sidebar from 'components/Sidebar.vue';
 import { useI18n } from 'vue-i18n';
 import languages from 'quasar/lang/index.json';
 import { useAppStore } from 'src/stores/app';
-import { SidebarCategoryProps, LanguageKeys } from 'src/types';
-
+import { LanguageKeys, Resize, ThemeName } from 'src/types';
 import enUS from 'quasar/lang/en-US.js';
 import koKR from 'quasar/lang/ko-KR.js';
 import ja from 'quasar/lang/ja.js';
 
 const $q = useQuasar();
+const { getPaletteColor } = colors;
+const primaryGrey = getPaletteColor('grey');
+const primaryBlue = getPaletteColor('blue');
 const i18n = useI18n();
 const store = {
   app: useAppStore(),
@@ -85,8 +115,27 @@ function toggleLeftDrawer() {
   leftDrawerOpen.value = !leftDrawerOpen.value;
 }
 
-// NOTE: 언어 설정
+// NOTE: 테마 메인 칼라 설정
+const selectTheme = ref<ThemeName>('grey');
+const themeOptions = ['grey', 'blue'];
+function onUpdateChangeTheme() {
+  // 스토어 저장
+  store.app.setThemeName(selectTheme.value);
 
+  // 메인 테마 칼라 변경
+  switch (selectTheme.value) {
+    case 'blue': {
+      setCssVar('primary', primaryBlue);
+      break;
+    }
+    default: {
+      setCssVar('primary', primaryGrey);
+      break;
+    }
+  }
+}
+
+// NOTE: 언어 설정
 const selectLanguage = ref<{ label: string; value: LanguageKeys }>({
   label: 'English (US)',
   value: 'en-US',
@@ -98,13 +147,6 @@ const languageOptions = appLanguages.map((lang) => ({
   label: lang.nativeName,
   value: lang.isoName,
 }));
-
-// NOTE: 라이트모드, 다크모드
-const darkMode = ref<boolean>(false);
-function onUpdateSettingLightAndDarkMode() {
-  $q.dark.set(darkMode.value);
-}
-
 async function onUpdateChangeLanguage() {
   try {
     // i18n, quasar lang 세팅
@@ -128,7 +170,6 @@ async function onUpdateChangeLanguage() {
     }
     $q.lang.set(langModule);
 
-    console.log('language', i18n.locale.value, $q.lang.isoName);
     // 스토어의 언어 세팅 및 저장
     await store.app.setLanguage(selectLanguage.value.value);
   } catch (error) {
@@ -139,9 +180,28 @@ async function onUpdateChangeLanguage() {
   }
 }
 
+// NOTE: 라이트모드, 다크모드
+const darkMode = ref<boolean>(false);
+function onUpdateSettingLightAndDarkMode() {
+  $q.dark.set(darkMode.value);
+}
+
+// NOTE: 사이즈 구하기
+// 헤더
+const headerSize = ref<Resize>({ width: 0, height: 0 });
+function onResizeHeader(size: Resize) {
+  headerSize.value = size;
+}
+// 카테고리
+const categorySize = ref<Resize>({ width: 0, height: 0 });
+function onResizeCategoryTitle(size: Resize) {
+  categorySize.value = size;
+}
+
 // NOTE: life-cycle
 onBeforeMount(() => {
   // light/dark 모드 세팅
-  $q.dark.set(darkMode.value);
+  $q.dark.set(store.app.getUserDarkMode);
+  darkMode.value = store.app.getUserDarkMode;
 });
 </script>
