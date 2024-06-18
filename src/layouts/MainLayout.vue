@@ -61,12 +61,18 @@
       </q-toolbar>
       <q-resize-observer :debounce="500" @resize="onResizeHeader" />
     </q-header>
-
-    <q-drawer v-model="leftDrawerOpen" show-if-above bordered>
+    <!-- ANCHOR: 2. 좌측 사이드바 -->
+    <q-drawer v-model="leftDrawerOpen" show-if-above bordered elevated>
       <q-list>
-        <q-item-label header> Essential Links </q-item-label>
-
-        <Sidebar v-for="link in linksList" :key="link.title" v-bind="link" />
+        <q-item-label header
+          >{{ i18n.t('main.category') }}
+          <q-resize-observer :debounce="500" @resize="onResizeCategoryTitle" />
+        </q-item-label>
+        <q-scroll-area
+          :style="{ height: `calc(100vh - ${categorySize.height}px)` }"
+        >
+          <Sidebar v-for="link in linksList" :key="link.title" v-bind="link" />
+        </q-scroll-area>
       </q-list>
     </q-drawer>
     <!-- ANCHOR: 3. 본문 -->
@@ -86,7 +92,12 @@ import Sidebar from 'components/Sidebar.vue';
 import { useI18n } from 'vue-i18n';
 import languages from 'quasar/lang/index.json';
 import { useAppStore } from 'src/stores/app';
-import { LanguageKeys, Resize, ThemeName } from 'src/types';
+import {
+  SidebarCategoryProps,
+  LanguageKeys,
+  Resize,
+  ThemeName,
+} from 'src/types';
 import enUS from 'quasar/lang/en-US.js';
 import koKR from 'quasar/lang/ko-KR.js';
 import ja from 'quasar/lang/ja.js';
@@ -100,12 +111,27 @@ const store = {
   app: useAppStore(),
 };
 
+// NOTE: 카테고리, 라우트, 아이콘, 설명
 const linksList: SidebarCategoryProps[] = [
+  {
+    title: 'Simple Calculator',
+    caption: 'A very simple calculator',
+    icon: 'calculate',
+    link: '/calculator',
+  },
+  {
+    title: 'Account Book',
+    caption: 'link to Account Book',
+    icon: 'paid',
+    link: '/account-book',
+    target: '_blank',
+  },
   {
     title: 'CK Editor5',
     caption: 'Test to CK Editor5',
     icon: 'mode_edit',
     link: '/test',
+    target: '_blank',
   },
 ];
 

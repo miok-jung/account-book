@@ -10,6 +10,7 @@ export type SidebarCategoryProps = {
   caption?: string;
   link?: string;
   icon?: string;
+  target?: '_self' | '_blank' | '_parent' | '_top' | '_unfencedTop';
 };
 export type ThemeName = 'grey' | 'blue';
 export type Resize = { width: number; height: number };

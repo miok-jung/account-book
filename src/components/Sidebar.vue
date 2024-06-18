@@ -1,5 +1,5 @@
 <template>
-  <q-item clickable tag="a" target="_blank" :href="link">
+  <q-item clickable tag="a" :target="target" :href="link">
     <q-item-section v-if="icon" avatar>
       <q-icon :name="icon" />
     </q-item-section>
@@ -18,5 +18,6 @@ withDefaults(defineProps<SidebarCategoryProps>(), {
   caption: '',
   link: '#',
   icon: '',
+  target: '_self',
 });
 </script>
