@@ -9,10 +9,25 @@ const routes: RouteRecordRaw[] = [
       {
         path: '',
         name: 'main-page',
-        meta: {
-          title: 'Main Page',
-        },
-        component: () => import('pages/IndexPage.vue'),
+
+        children: [
+          {
+            path: '',
+            name: '',
+            meta: {
+              title: 'Main Page',
+            },
+            component: () => import('pages/IndexPage.vue'),
+          },
+          {
+            path: 'calculator',
+            name: 'calculator',
+            meta: {
+              title: 'Main - Calculator',
+            },
+            component: () => import('pages/CalculatorPage.vue'),
+          },
+        ],
       },
     ],
   },
