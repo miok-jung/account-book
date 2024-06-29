@@ -1,1 +1,23 @@
-// app global css in SCSS form
+@import url('https://fonts.googleapis.com/css2?family=Sunflower:wght@300;500;700&display=swap');
+
+body {
+  font-family: 'Sunflower', 'Roboto', sans-serif;
+}
+
+.sunflower-bold {
+  font-family: 'Sunflower', sans-serif;
+  font-weight: 700;
+  font-style: normal;
+}
+
+.sunflower-medium {
+  font-family: 'Sunflower', sans-serif;
+  font-weight: 500;
+  font-style: normal;
+}
+
+.sunflower-light {
+  font-family: 'Sunflower', sans-serif;
+  font-weight: 300;
+  font-style: normal;
+}
