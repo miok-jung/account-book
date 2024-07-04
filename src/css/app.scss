@@ -21,3 +21,8 @@ body {
   font-weight: 300;
   font-style: normal;
 }
+
+// Quasar 공통 CSS 수정내역
+.q-btn {
+  min-height: 0;
+}
