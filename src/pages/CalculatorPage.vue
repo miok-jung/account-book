@@ -124,8 +124,7 @@
             <q-btn class="length4" outline>+</q-btn>
           </div>
           <div class="flex no-wrap gutter-x-8px q-mb-sm full-width">
-            <q-btn class="length2-spacing-8" outline>0</q-btn>
-            <q-space style="width: 8px" />
+            <q-btn class="length2-spacing8" outline>0</q-btn>
             <q-btn class="length4" outline>.</q-btn>
             <!-- 총합 -->
             <q-btn class="length4" outline>=</q-btn>

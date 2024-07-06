@@ -17,7 +17,7 @@
   @include length(2);
 }
 .length2-spacing8 {
-  @include length(2, 8);
+  @include length(2, 8px);
 }
 .length4 {
   @include length(4);
