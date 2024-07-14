@@ -1,0 +1,27 @@
+@import 'src/css/_mixins.scss';
+
+.gutter-x-4px {
+  @include gutter(x, 4px);
+}
+.gutter-x-8px {
+  @include gutter(x, 8px);
+}
+.gutter-y-8px {
+  @include gutter(y, 8px);
+}
+.gutter-y-16px {
+  @include gutter(y, 16px);
+}
+
+.length2 {
+  @include length(2);
+}
+.length2-spacing8 {
+  @include length(2, 8px);
+}
+.length4 {
+  @include length(4);
+}
+.length5 {
+  @include length(5);
+}
