@@ -12,7 +12,7 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [18.14.2] # Update to match your local Node.js versio
+        node-version: [18.14.2] # Update to match your local Node.js version
 
     steps:
       - name: Checkout code
@@ -32,7 +32,7 @@ jobs:
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v4
         with:
-          github_token: ${{ secrets.SSH_PRIVATE_KEY }}
+          github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./dist/spa
 
       - name: Deploy to Vercel
